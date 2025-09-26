@@ -1,0 +1,4 @@
+workspace/*/data
+workspace/*/download
+workspace/*/runtime
+workspace/*/cache

@@ -1,7 +1,0 @@
-2025/08/19-19:44:23.725 4276 Reusing MANIFEST /home/z6/.config/qutebrowser/workspace/hacking/data/webengine/IndexedDB/https_www.netacad.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/08/19-19:44:23.726 4276 Recovering log #11
-2025/08/19-19:44:23.727 4276 Reusing old log /home/z6/.config/qutebrowser/workspace/hacking/data/webengine/IndexedDB/https_www.netacad.com_0.indexeddb.leveldb/000011.log 
-2025/08/19-19:44:23.732 433d Level-0 table #16: started
-2025/08/19-19:44:23.738 433d Level-0 table #16: 6901 bytes OK
-2025/08/19-19:44:23.744 433d Delete type=0 #11
-2025/08/19-19:44:23.745 433d Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)

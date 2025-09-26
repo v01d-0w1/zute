@@ -1,6 +1,7 @@
+
 # ===== BASIC CONFIGURATION =====
 config.load_autoconfig(False)
-
+config.bind('<Escape>', 'fake-key <F13>')
 # ===== CORE COLOR SETTINGS =====
 
 # Initialize with stylesheet disabled

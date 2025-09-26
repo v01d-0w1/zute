@@ -1,9 +1,0 @@
-2025/08/20-10:43:10.584 5181 Reusing MANIFEST /home/z6/.config/qutebrowser/workspace/hacking/data/webengine/Local Storage/leveldb/MANIFEST-000001
-2025/08/20-10:43:10.585 5181 Recovering log #99
-2025/08/20-10:43:10.586 5181 Reusing old log /home/z6/.config/qutebrowser/workspace/hacking/data/webengine/Local Storage/leveldb/000099.log 
-2025/08/20-10:45:14.640 5182 Level-0 table #104: started
-2025/08/20-10:45:14.654 5182 Level-0 table #104: 24962 bytes OK
-2025/08/20-10:45:14.663 5182 Delete type=0 #99
-2025/08/20-10:47:09.913 5b1e Level-0 table #106: started
-2025/08/20-10:47:09.931 5b1e Level-0 table #106: 26350 bytes OK
-2025/08/20-10:47:09.938 5b1e Delete type=0 #103
