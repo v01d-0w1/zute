@@ -1,12 +1,7 @@
+
 # ===== BASIC CONFIGURATION =====
 config.load_autoconfig(False)
-# Make F13 behave exactly like Escape in every mode
-config.bind('<F13>', 'mode-leave', mode='insert')
-config.bind('<F13>', 'fake-key <Escape>', mode='normal')
-config.bind('<F13>', 'fake-key <Escape>', mode='passthrough')
-config.bind('<F13>', 'fake-key <Escape>', mode='command')
-config.bind('<F13>', 'fake-key <Escape>', mode='caret')
-config.bind('<F13>', 'fake-key <Escape>', mode='hint')
+config.bind('<Escape>', 'fake-key <F13>')
 # ===== CORE COLOR SETTINGS =====
 
 # Initialize with stylesheet disabled
@@ -78,7 +73,6 @@ c.fonts.hints = 'bold 11pt monospace'
 
 # ===== WEB CONTENT SETTINGS =====
 c.colors.webpage.preferred_color_scheme = 'dark'
-c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.bg = 'black'
 
 # ===== START PAGES =====
