@@ -91,10 +91,48 @@ c.colors.webpage.darkmode.enabled = False
 c.colors.webpage.darkmode.policy.images = 'never'
 c.colors.webpage.darkmode.policy.page = 'always'
 
+# ===== IMPROVED SESSION MANAGEMENT =====
+
+# Save session with name prompt
+config.bind(',ws', 'set-cmd-text -s :session-save')
+config.bind(',wS', 'set-cmd-text -s :session-save -o')  # Overwrite existing
+
+# Load session with name prompt
+config.bind(',wl', 'set-cmd-text -s :session-load')
+config.bind(',wL', 'set-cmd-text -s :session-load -t')  # Load in new window
+
+# Quick session slots (for frequently used sessions)
+config.bind(',w1', 'session-save work1')
+config.bind(',w2', 'session-save work2') 
+config.bind(',w3', 'session-save work3')
+config.bind(',w4', 'session-save personal')
+config.bind(',w5', 'session-save temp')
+
+config.bind(',l1', 'session-load work1 ;; close')
+config.bind(',l2', 'session-load work2 ;; close')
+config.bind(',l3', 'session-load work3 ;; close')
+config.bind(',l4', 'session-load personal ;; close')
+config.bind(',l5', 'session-load temp ;; close')
+
+# Session management commands
+config.bind(',wd', 'set-cmd-text -s :session-delete')  # Delete session
+config.bind(',wL', 'session-list')  # List all saved sessions
+
+# Auto-save current session periodically
+c.auto_save.interval = 30000  # Save every 30 seconds (optional)
+c.auto_save.session = True
+
+# ===== MULTI-WINDOW SESSION SUPPORT =====
+# This allows running multiple qutebrowser instances with different sessions
+c.session.lazy_restore = True  # Don't restore until needed
+
+# ===== SESSION STORAGE LOCATION =====
+import os
+session_dir = os.path.expanduser('~/.local/share/qutebrowser/sessions')
+# Ensure session directory exists
+os.makedirs(session_dir, exist_ok=True)
+
 # In config.py
-config.bind(',ws', 'session-save work')
-config.bind(',wl', 'session-load work ;; close')
-# Create a tab stack
 config.bind(',tg', 'tab-give')
 
 # Navigate stacks
