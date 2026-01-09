@@ -1,5 +1,7 @@
 # ===== BASIC CONFIGURATION =====
 config.load_autoconfig(False)
+
+# ===== SPECIAL KEYS =====
 # Make F13 behave exactly like Escape in every mode
 config.bind('<F13>', 'mode-leave', mode='insert')
 config.bind('<F13>', 'fake-key <Escape>', mode='normal')
@@ -7,11 +9,11 @@ config.bind('<F13>', 'fake-key <Escape>', mode='passthrough')
 config.bind('<F13>', 'fake-key <Escape>', mode='command')
 config.bind('<F13>', 'fake-key <Escape>', mode='caret')
 config.bind('<F13>', 'fake-key <Escape>', mode='hint')
-# ===== CORE COLOR SETTINGS =====
 
-# Initialize with stylesheet disabled
+# ===== CORE COLOR SETTINGS =====
 config.load_autoconfig()
 config.set('content.user_stylesheets', ['~/.config/qutebrowser/green-black.css'])
+
 # Corrected single toggle key
 config.bind(',st', 
     'config-cycle content.user_stylesheets [] ["~/.config/qutebrowser/green-black.css"] ;; ' +
@@ -78,12 +80,11 @@ c.fonts.hints = 'bold 11pt monospace'
 
 # ===== WEB CONTENT SETTINGS =====
 c.colors.webpage.preferred_color_scheme = 'dark'
-c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.bg = 'black'
 
 # ===== START PAGES =====
-c.url.start_pages = ['~/.config/qutebrowser/home/index.html']
-c.url.default_page = '~/.config/qutebrowser/home/index.html'
+c.url.start_pages = ['https://blank.page/']
+c.url.default_page = 'https://blank.page/'
 
 # ===== DARK MODE POLICY =====
 # Disabled to prevent conflicts with our CSS
@@ -92,7 +93,6 @@ c.colors.webpage.darkmode.policy.images = 'never'
 c.colors.webpage.darkmode.policy.page = 'always'
 
 # ===== IMPROVED SESSION MANAGEMENT =====
-
 # Save session with name prompt
 config.bind(',ws', 'set-cmd-text -s :session-save')
 config.bind(',wS', 'set-cmd-text -s :session-save -o')  # Overwrite existing
@@ -123,29 +123,20 @@ c.auto_save.interval = 30000  # Save every 30 seconds (optional)
 c.auto_save.session = True
 
 # ===== MULTI-WINDOW SESSION SUPPORT =====
-# This allows running multiple qutebrowser instances with different sessions
 c.session.lazy_restore = True  # Don't restore until needed
 
 # ===== SESSION STORAGE LOCATION =====
 import os
 session_dir = os.path.expanduser('~/.local/share/qutebrowser/sessions')
-# Ensure session directory exists
 os.makedirs(session_dir, exist_ok=True)
 
-# In config.py
+# ===== TAB MANAGEMENT =====
 config.bind(',tg', 'tab-give')
-
-# Navigate stacks
 config.bind(',tn', 'tab-focus next')
 config.bind(',tp', 'tab-focus prev')
-
-# Move tabs between stacks
 config.bind(',tm', 'tab-move')
 
-# In config.py
-c.auto_save.session = True  # Auto-save session on exit
-c.session.default_name = 'default'  # Default session name
-
+# ===== WORKSPACE MANAGEMENT =====
 config.bind(',wd1', 'spawn --userscript switch-workspace hacking')
 config.bind(',wd2', 'spawn --userscript switch-workspace study')
 config.bind(',wd3', 'spawn --userscript switch-workspace z6')
@@ -155,48 +146,175 @@ config.bind(',W1', 'spawn --userscript open-workspace hacking')
 config.bind(',W2', 'spawn --userscript open-workspace study')
 config.bind(',W3', 'spawn --userscript open-workspace z6')
 
-# ===== COMPLETE AD-BLOCKING CONFIGURATION =====
+# ===== BRAVE-LEVEL ADBLOCKING CONFIGURATION =====
 # Enable ad-blocking system
 c.content.blocking.enabled = True
 
-# Blocking method (options: 'auto', 'adblock', 'hosts', 'both')
-c.content.blocking.method = 'both'  # 'auto' = smart combination of methods
+# Blocking method - use 'both' for maximum protection
+c.content.blocking.method = 'both'
 
-# ===== ADBLOCK LISTS (EasyList format) =====
+# ===== AGGRESSIVE ADBLOCK LISTS (Brave-like protection) =====
 c.content.blocking.adblock.lists = [
-    # Essential filters
-    'https://easylist.to/easylist/easylist.txt',  # General advertisements
-    'https://easylist.to/easylist/easyprivacy.txt',  # Tracking protection
-    'https://easylist-downloads.adblockplus.org/easylist.txt',  # Mirror
-    
-    # Anti-annoyance
-    'https://secure.fanboy.co.nz/fanboy-annoyance.txt',  # Cookie notices, popups
-    'https://easylist.to/easylist/fanboy-social.txt',  # Social media widgets
-    
-    # Regional filters (uncomment if needed)
-    # 'https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt',  # Anti-CoinHive
-    # 'https://stanev.org/abp/adblock_bg.txt',  # Bulgarian ads
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/quick-fixes.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2024.txt',
+    'https://raw.githubusercontent.com/DandelionSprout/adfilt/master/YouTubeAdblockList.txt',
+    'https://raw.githubusercontent.com/Mechazawa/FuckFuckAdblock/master/FuckFuckAdblock.txt',
+    'https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt',
+    'https://easylist.to/easylist/easylist.txt',
+    'https://easylist.to/easylist/easyprivacy.txt',
+    'https://easylist-downloads.adblockplus.org/easylist.txt',
+    'https://secure.fanboy.co.nz/fanboy-annoyance.txt',
+    'https://easylist.to/easylist/fanboy-social.txt',
+    'https://www.i-dont-care-about-cookies.eu/abp/',
+    'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adservers.txt',
+    'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/tracking.txt',
+    'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/MobileFilter/sections/adservers.txt',
+    'https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/quick-fixes.txt',
+    'https://easylist-downloads.adblockplus.org/easylistitaly.txt',
+    'https://stanev.org/abp/adblock_bg.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-standard.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-disconnect.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-cookie-consent.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-firstparty.txt',
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/region/usa.txt',  # USA
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/region/eur.txt',  # Europe
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/region/jpn.txt',  # Japan
+    'https://raw.githubusercontent.com/brave/adblock-lists/master/brave-social.txt',
 ]
 
-# ===== HOSTS-BASED BLOCKING =====
+# ===== AGGRESSIVE HOSTS-BASED BLOCKING =====
 c.content.blocking.hosts.lists = [
-    'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',  # Standard
-    'https://someonewhocares.org/hosts/zero/hosts',  # More aggressive
-    # 'https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt',  # Mobile-focused
+    'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',
+    'https://someonewhocares.org/hosts/zero/hosts',
+    'https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt',
+    'https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt',
+    'https://raw.githubusercontent.com/jmdugan/blocklists/master/corporations/facebook/all',
+    'https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt',
+
 ]
 
-# ===== ADVANCED SETTINGS =====
-# Whitelist certain sites (if needed)
-c.content.blocking.whitelist = [
-    # '*.example.com',  # Uncomment and add sites that break
-]
+# ===== BRAVE-LIKE PRIVACY SETTINGS =====
+# Cookie control (Brave blocks 3rd-party cookies by default)
+c.content.cookies.accept = 'no-3rdparty'
 
-# Block WebRTC IP leakage (privacy)
+# Fingerprint protection
+c.content.headers.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+c.content.headers.custom = {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "accept-language": "en-US,en;q=0.9",
+    "sec-ch-ua": '"Not_A Brand";v="8", "Chromium";v="120"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+}
+
+# Do Not Track
+c.content.headers.do_not_track = True
+
+# Block JavaScript popups and redirects
+c.content.javascript.modal_dialog = False
+c.content.javascript.can_open_tabs_automatically = False
+
+# WebRTC blocking (prevents IP leaks)
 c.content.webrtc_ip_handling_policy = 'disable-non-proxied-udp'
 
-# Block JavaScript popups
-c.content.javascript.modal_dialog = False
+# Block autoplay videos
+c.content.autoplay = False
 
-# ===== KEYBINDS FOR ADBLOCK CONTROL =====
+# ===== ENHANCED ADBLOCK KEYBINDS =====
 config.bind(',au', 'adblock-update', mode='normal')  # Update blocklists
 config.bind(',at', 'adblock-toggle', mode='normal')  # Toggle ad-blocking
+config.bind(',al', 'adblock-list', mode='normal')  # Show blocked elements
+
+# Quick whitelist current site
+config.bind(',aw', 'adblock-whitelist ;; message-info "Site whitelisted"', mode='normal')
+
+# Toggle JavaScript (like Brave's shields)
+config.bind(',aj', 'config-cycle content.javascript.enabled true false ;; reload',
+            mode='normal')
+
+# Quick toggle for aggressive blocking
+config.bind(',aa', 'config-cycle content.blocking.method both auto ;; message-info "Adblock method: {}"'.format('{value}'),
+            mode='normal')
+
+# ===== CUSTOM SITE EXCEPTIONS (for broken sites) =====
+c.content.blocking.whitelist = [
+    # Add sites that break with aggressive blocking
+    # Example: '*.youtube.com',  # If you need YouTube to work differently
+    # '*.google.com',   # If search breaks
+    # '*.paypal.com',   # Financial sites often need exceptions
+]
+
+# ===== AUTOMATIC UPDATES =====
+# Update blocklists automatically (every 24 hours)
+c.content.blocking.adblock.update_interval = 24 * 60 * 60  # Seconds
+
+# ===== PERFORMANCE OPTIMIZATIONS =====
+# Cache adblock rules for faster loading
+c.content.blocking.adblock.cache = True
+
+# ===== CONTENT SETTINGS FOR BETTER BLOCKING =====
+# Block images from 3rd party sites by default
+c.content.images = True
+config.bind(',ai', 'config-cycle content.images true false ;; reload',
+            mode='normal')
+
+# Block media autoplay
+c.content.media.audio_video_capture = False
+c.content.media.audio_capture = False
+c.content.media.video_capture = False
+c.content.media.media_keys = False
+
+# ===== MISCELLANEOUS SETTINGS =====
+# Default session
+c.session.default_name = 'default'
+
+# Downloads
+c.downloads.location.directory = '~/Downloads'
+c.downloads.location.prompt = False
+c.downloads.remove_finished = 3000  # Remove finished downloads after 3 seconds
+
+# Search engines
+c.url.searchengines = {
+    'DEFAULT': 'https://duckduckgo.com/?q={}',
+    'g': 'https://www.google.com/search?q={}',
+    'd': 'https://duckduckgo.com/?q={}',
+    'y': 'https://www.youtube.com/results?search_query={}',
+    'w': 'https://en.wikipedia.org/wiki/{}',
+    'r': 'https://www.reddit.com/search?q={}',
+    'gh': 'https://github.com/search?q={}',
+}
+
+# Enable smooth scrolling
+c.scrolling.smooth = True
+
+# Enable hints
+c.hints.chars = 'asdfghjkl'
+
+# Status bar settings
+c.statusbar.show = 'always'
+c.statusbar.position = 'bottom'
+
+# Completion settings
+c.completion.height = '30%'
+c.completion.shrink = True
+c.completion.use_best_match = True
+
+# ===== SECURITY ENHANCEMENTS =====
+# Disable dangerous features
+c.content.local_content_can_access_remote_urls = False
+c.content.local_content_can_access_file_urls = False
+c.content.webgl = False
+
+# PDF viewer
+c.content.pdfjs = True
+
+# ===== SESSION AUTO-SAVE =====
+c.auto_save.session = True
