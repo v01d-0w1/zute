@@ -137,9 +137,9 @@ config.bind(',tp', 'tab-focus prev')
 config.bind(',tm', 'tab-move')
 
 # ===== WORKSPACE MANAGEMENT =====
-config.bind(',wd1', 'spawn --userscript switch-workspace hacking')
-config.bind(',wd2', 'spawn --userscript switch-workspace study')
-config.bind(',wd3', 'spawn --userscript switch-workspace z6')
+config.bind(',wr1', 'spawn --userscript switch-workspace hacking')
+config.bind(',wr2', 'spawn --userscript switch-workspace study')
+config.bind(',wr3', 'spawn --userscript switch-workspace z6')
 
 # Opens new workspace while keeping current window open (capital W)
 config.bind(',W1', 'spawn --userscript open-workspace hacking')
