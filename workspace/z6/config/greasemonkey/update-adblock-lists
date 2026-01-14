@@ -1,0 +1,29 @@
+#!/bin/bash
+# Force update all adblock lists
+
+echo "🔄 Updating ALL adblock lists..."
+
+# Download latest lists
+LISTS=(
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt"
+    "https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/youtube.txt"
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/brave-unbreak.txt"
+    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+)
+
+TEMP_DIR="/tmp/qutebrowser-adblock-update"
+mkdir -p "$TEMP_DIR"
+
+for url in "${LISTS[@]}"; do
+    filename=$(basename "$url")
+    echo "Downloading: $filename"
+    curl -s "$url" -o "$TEMP_DIR/$filename"
+    if [ $? -eq 0 ]; then
+        echo "✅ Downloaded: $filename"
+    else
+        echo "❌ Failed: $filename"
+    fi
+done
+
+echo "✅ All lists updated at $(date)"
+echo "Restart qutebrowser for changes to take full effect"

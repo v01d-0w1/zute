@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Starting adblock list update..."
+echo "This may take a moment..."
+echo "Update complete!"

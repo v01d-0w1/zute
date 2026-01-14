@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Clearing YouTube cache..."
+rm -rf ~/.cache/qutebrowser/* 2>/dev/null
+rm -rf ~/.local/share/qutebrowser/webengine/Default/Cache/* 2>/dev/null
+echo "YouTube cache cleared!"
