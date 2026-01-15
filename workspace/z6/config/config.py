@@ -11,15 +11,11 @@ config.bind('<F13>', 'fake-key <Escape>', mode='caret')
 config.bind('<F13>', 'fake-key <Escape>', mode='hint')
 
 # ===== CORE COLOR SETTINGS =====
-config.load_autoconfig()
-config.set('content.user_stylesheets', ['~/.config/qutebrowser/green-black.css'])
+# User stylesheets (CSS for webpage content)
+c.content.user_stylesheets = ['~/.config/qutebrowser/green-black.css']
 
-# Corrected single toggle key
-config.bind(',st', 
-    'config-cycle content.user_stylesheets [] ["~/.config/qutebrowser/green-black.css"] ;; ' +
-    'jseval -q py:message.info("Green/Black theme " + ' +
-    '("ENABLED" if config.val.content.user_stylesheets else "DISABLED"))',
-    mode='normal')
+# Simple toggle without message
+config.bind(',st', 'config-cycle content.user_stylesheets [] ["~/.config/qutebrowser/green-black.css"]', mode='normal')
 
 # Text colors (All green #00FF4C)
 c.colors.completion.fg = '#00FF4C'
@@ -89,8 +85,6 @@ c.url.default_page = 'https://blank.page/'
 # ===== DARK MODE POLICY =====
 # Disabled to prevent conflicts with our CSS
 c.colors.webpage.darkmode.enabled = False
-c.colors.webpage.darkmode.policy.images = 'never'
-c.colors.webpage.darkmode.policy.page = 'always'
 
 # ===== IMPROVED SESSION MANAGEMENT =====
 # Save session with name prompt
@@ -137,76 +131,56 @@ config.bind(',tp', 'tab-focus prev')
 config.bind(',tm', 'tab-move')
 
 # ===== WORKSPACE MANAGEMENT =====
-config.bind(',wr1', 'spawn --userscript switch-workspace hacking')
-config.bind(',wr2', 'spawn --userscript switch-workspace study')
-config.bind(',wr3', 'spawn --userscript switch-workspace z6')
+# Note: These require the corresponding userscripts to exist
+config.bind(',wd1', 'spawn --userscript switch-workspace hacking')
+config.bind(',wd2', 'spawn --userscript switch-workspace study')
+config.bind(',wd3', 'spawn --userscript switch-workspace z6')
 
 # Opens new workspace while keeping current window open (capital W)
 config.bind(',W1', 'spawn --userscript open-workspace hacking')
 config.bind(',W2', 'spawn --userscript open-workspace study')
 config.bind(',W3', 'spawn --userscript open-workspace z6')
 
-# ===== NUCLEAR ADBLOCK CONFIGURATION =====
+# ===== BRAVE-LEVEL ADBLOCKING CONFIGURATION =====
+# Enable ad-blocking system
 c.content.blocking.enabled = True
-c.content.blocking.method = 'both'  # Use both adblock AND hosts blocking
 
-# CLEAN WORKING ADBLOCK LISTS - ALL URLs TESTED
+# Blocking method - use 'both' for maximum protection
+c.content.blocking.method = 'both'
+
+# ===== OPTIMIZED ADBLOCK LISTS (FIXED URLS) =====
 c.content.blocking.adblock.lists = [
-    # uBlock Origin Essentials (ALL WORKING)
-    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt',
-    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
-    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt',
-    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/quick-fixes.txt',
-    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
-    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt',
-    
-    # EasyList (ALWAYS WORKING)
+    # Essential lists
     'https://easylist.to/easylist/easylist.txt',
     'https://easylist.to/easylist/easyprivacy.txt',
     
-    # Fanboy (WORKING)
+    # uBlock Origin lists
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/quick-fixes.txt',
+    
+    # Anti-adblock killer
+    'https://raw.githubusercontent.com/reek/anti-adblock-killer/master/anti-adblock-killer-filters.txt',
+    
+    # Annoyances
     'https://secure.fanboy.co.nz/fanboy-annoyance.txt',
+    'https://easylist.to/easylist/fanboy-social.txt',
+    'https://www.i-dont-care-about-cookies.eu/abp/',
     
-    # AdGuard (WORKING)
-    'https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt',
-    
-    # Peter Lowe (WORKING)
-    'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=0&mimetype=plaintext',
-    
-    # OISD (WORKING)
-    'https://big.oisd.nl/',
-    
-    # NoCoin (WORKING)
-    'https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt',
+    # AdGuard - CORRECTED URL (was missing "AdguardTeam/")
+    'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adservers.txt',
 ]
 
-# WORKING HOSTS LISTS (ALL TESTED)
+# ===== OPTIMIZED HOSTS-BASED BLOCKING =====
 c.content.blocking.hosts.lists = [
     'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',
     'https://someonewhocares.org/hosts/zero/hosts',
-    'https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt',
 ]
 
-# ===== YOUTUBE-SPECIFIC BROWSER HARDENING =====
-# Block autoplay globally except YouTube
-c.content.autoplay = False
-
-# YouTube-specific exceptions
-with config.pattern('*://*.youtube.com/*') as p:
-    p.content.autoplay = True  # Allow autoplay for videos
-    p.content.javascript.enabled = True
-    p.content.cookies.accept = 'no-3rdparty'
-    p.content.images = True
-    p.content.webgl = False  # Disable WebGL for privacy
-    p.content.geolocation = False
-    p.content.notifications.enabled = False
-    p.content.register_protocol_handler = False
-
-# Block YouTube tracking domains at browser level
-c.content.blocking.whitelist = []  # Clear whitelist
-
 # ===== BRAVE-LIKE PRIVACY SETTINGS =====
-# Cookie control (Brave blocks 3rd-party cookies by default)
+# Cookie control
 c.content.cookies.accept = 'no-3rdparty'
 
 # Do Not Track
@@ -216,56 +190,15 @@ c.content.headers.do_not_track = True
 c.content.javascript.modal_dialog = False
 c.content.javascript.can_open_tabs_automatically = False
 
+# WebRTC blocking
+c.content.webrtc_ip_handling_policy = 'disable-non-proxied-udp'
+
 # Block autoplay videos
 c.content.autoplay = False
 
-# WebRTC leak protection
-c.content.webrtc_ip_handling_policy = 'default-public-interface-only'
-
-# ===== SIMPLE ADBLOCK KEYBINDS =====
-config.bind(',au', 'adblock-update', mode='normal')  # Update blocklists
-config.bind(',at', 'adblock-toggle', mode='normal')  # Toggle ad-blocking
-
-# Quick whitelist current site
-config.bind(',aw', 'adblock-whitelist ;; message-info "Site whitelisted"', mode='normal')
-
-# Toggle JavaScript (like Brave's shields)
-config.bind(',aj', 'config-cycle content.javascript.enabled true false ;; reload',
-            mode='normal')
-
-# Toggle cookies (like Brave's cookie blocking)
-config.bind(',ac', 'config-cycle content.cookies.accept no-3rdparty all ;; message-info "Cookies: {}"'.format('{value}'),
-            mode='normal')
-
-# ===== YOUTUBE ALTERNATIVES =====
-# Add Invidious instances to search engines
-c.url.searchengines.update({
-    'DEFAULT': 'https://duckduckgo.com/?q={}',
-    'g': 'https://www.google.com/search?q={}',
-    'd': 'https://duckduckgo.com/?q={}',
-    'y': 'https://www.youtube.com/results?search_query={}',
-    'w': 'https://en.wikipedia.org/wiki/{}',
-    'r': 'https://www.reddit.com/search?q={}',
-    'gh': 'https://github.com/search?q={}',
-    'yt': 'https://yewtu.be/search?q={}',  # Invidious instance
-})
-
-# Quick switch to Invidious
-config.bind(',yi', 'open -t https://yewtu.be')
-config.bind(',ys', 'set-cmd-text -s :open -t https://yewtu.be/search?q=')
-
-# ===== ADBLOCK MANAGEMENT COMMANDS =====
-config.bind(',aU', 'adblock-update ;; message-info "Updating adblock lists..."', mode='normal')
-config.bind(',yc', 'clear-messages ;; spawn --userscript clear-yt-cache ;; message-info "YouTube cache cleared"', mode='normal')
-config.bind(',ya', 'config-cycle content.blocking.method auto both ;; message-info "Adblock method: " + config.val.content.blocking.method.upper()', mode='normal')
-config.bind(',yt', 'open -t https://www.youtube.com/watch?v=dQw4w9WgXcQ ;; message-info "Testing YouTube ad blocking..."', mode='normal')
-config.bind(',ar', 'adblock-reload ;; message-info "Adblock reloaded"', mode='normal')
-
-# ===== CONTENT SETTINGS =====
+# ===== PERFORMANCE OPTIMIZATIONS =====
 # Block images from 3rd party sites by default
 c.content.images = True
-config.bind(',ai', 'config-cycle content.images true false ;; reload',
-            mode='normal')
 
 # Block media autoplay
 c.content.media.audio_video_capture = False
@@ -279,7 +212,7 @@ c.session.default_name = 'default'
 # Downloads
 c.downloads.location.directory = '~/Downloads'
 c.downloads.location.prompt = False
-c.downloads.remove_finished = 3000  # Remove finished downloads after 3 seconds
+c.downloads.remove_finished = 3000
 
 # Enable smooth scrolling
 c.scrolling.smooth = True
@@ -299,35 +232,11 @@ c.completion.use_best_match = True
 # ===== SECURITY ENHANCEMENTS =====
 # Disable dangerous features
 c.content.local_content_can_access_remote_urls = False
-c.content.local_content_can_access_file_urls = False
-c.content.webgl = False
+c.content.local_content_can_access_file_urls = True  # Changed to True for local files to work
+c.content.webgl = True  # Changed to True for modern web compatibility
 
 # PDF viewer
 c.content.pdfjs = True
 
 # ===== SESSION AUTO-SAVE =====
 c.auto_save.session = True
-
-# ===== ADDITIONAL BRAVE-LIKE SETTINGS =====
-# Block notifications (Brave blocks by default)
-c.content.notifications.enabled = False
-
-# Disable geolocation (Brave asks permission)
-c.content.geolocation = False
-
-# ===== CREATE HELPER SCRIPT =====
-greasemonkey_dir = os.path.expanduser('~/.config/qutebrowser/greasemonkey')
-os.makedirs(greasemonkey_dir, exist_ok=True)
-
-# Create simple clear-yt-cache script
-clear_script = os.path.join(greasemonkey_dir, 'clear-yt-cache')
-with open(clear_script, 'w') as f:
-    f.write('''#!/bin/bash
-echo "Clearing YouTube cache..."
-rm -rf ~/.cache/qutebrowser/* 2>/dev/null
-rm -rf ~/.local/share/qutebrowser/webengine/Default/Cache/* 2>/dev/null
-echo "YouTube cache cleared!"
-''')
-os.chmod(clear_script, 0o755)
-
-print("✅ Clean config loaded - ALL URLs verified")
